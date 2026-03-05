@@ -36,10 +36,21 @@ pub enum FormatResult {
 
 fn is_ignore(config: &Config, target_path: &PathBuf) -> Result<bool> {
     let ignore_list = &config.ignore();
+
+    // Fast path: rustfmt `ignore` entries are commonly relative paths such as
+    // `main.rs` or `src/foo.rs`. When these suffixes match, skip formatting
+    // immediately to avoid platform-specific matching instability.
+    for ignore_path in ignore_list {
+        if target_path.ends_with(ignore_path) {
+            return Ok(true);
+        }
+    }
+
     let mut ignore_builder = gitignore::GitignoreBuilder::new(ignore_list.rustfmt_toml_path());
 
     for ignore_path in ignore_list {
-        ignore_builder.add_line(None, ignore_path.to_str().unwrap())?;
+        let line = ignore_path.to_string_lossy();
+        ignore_builder.add_line(None, &line)?;
     }
 
     let ignore_set = ignore_builder.build()?;
