@@ -1,6 +1,6 @@
 [package]
 name = "foro-rustfmt"
-version = "0.5.4"
+version = "1.9.0"
 edition = "2021"
 repository = "https://github.com/nahco314/foro-rustfmt"
 

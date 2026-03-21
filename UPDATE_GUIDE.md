@@ -165,8 +165,10 @@ Update only what is required:
 
 Versioning rule for this repo:
 
-- use the next `0.5.x` patch release for follow-up fixes on the same formatter line
-- if the user asked for "move to 0.5.x", bump into that series first, then use further patch bumps for release-fix iterations
+- **Upstream tracking release**: use the upstream `rustfmt` crate version as the plugin version tag verbatim (e.g., rustfmt `1.9.0` → tag `1.9.0`).
+- **Plugin-only fix** (bug fix, foro ABI change, packaging fix — no upstream version change): append `-<n>` to the last upstream version, where n starts at 1 and increments (e.g., `1.9.0-1`, `1.9.0-2`).
+- When a new upstream tracking release happens, n resets — the bare upstream version is used again (e.g., `1.10.0`, not `1.10.0-0`).
+- Semver ordering is intentionally not preserved for the `-<n>` suffix. These tags are GitHub release identifiers, not semver coordinates.
 
 ## Step 4: Local Validation
 
