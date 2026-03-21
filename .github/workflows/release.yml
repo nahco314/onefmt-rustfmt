@@ -12,6 +12,7 @@ jobs:
   build-local-artifacts:
     name: build-local-artifacts
     strategy:
+      fail-fast: false
       matrix:
         include:
           - runner: 'ubuntu-24.04'
