@@ -8,20 +8,21 @@ fi
 
 sysroot="$(rustc --print sysroot | sed 's|\\|/|g')"
 host_lib_dir="${sysroot}/lib/rustlib/$(rustc -vV | grep host | awk '{print $2}')/lib"
+win_path="${host_lib_dir}"
 
 extra_dll_pack_args=(
     --include "${host_lib_dir}/*"
     --macho-rpath "${host_lib_dir}"
-    --win-path "${host_lib_dir}"
 )
 
 if [ -n "${SYSTEMROOT:-}" ]; then
     system_root="$(printf '%s\n' "${SYSTEMROOT}" | sed 's|\\|/|g')"
-    extra_dll_pack_args+=(
-        --win-path "${system_root}/System32"
-        --win-path "${system_root}/SysWOW64"
-    )
+    win_path="${host_lib_dir};${system_root}/System32;${system_root}/SysWOW64"
 fi
+
+extra_dll_pack_args+=(
+    --win-path "${win_path}"
+)
 
 rustup target add "${DLL_PACK_TARGET}"
 
