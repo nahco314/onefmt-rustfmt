@@ -14,9 +14,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - runner: 'ubuntu-20.04'
+          - runner: 'ubuntu-22.04'
             target: 'x86_64-unknown-linux-gnu'
-          - runner: 'macos-13'
+          - runner: 'macos-15-intel'
             target: 'x86_64-apple-darwin'
           - runner: 'macos-14'
             target: 'aarch64-apple-darwin'
@@ -47,7 +47,7 @@ jobs:
   build-global-artifacts:
     needs:
       - build-local-artifacts
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-22.04"
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -75,7 +75,7 @@ jobs:
     if: ${{ always() && (needs.build-global-artifacts.result == 'skipped' || needs.build-global-artifacts.result == 'success') && (needs.build-local-artifacts.result == 'skipped' || needs.build-local-artifacts.result == 'success') }}
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    runs-on: "ubuntu-20.04"
+    runs-on: "ubuntu-22.04"
     steps:
       - uses: actions/checkout@master
       - name: Fetch artifacts
