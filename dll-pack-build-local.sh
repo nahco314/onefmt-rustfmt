@@ -8,7 +8,6 @@ fi
 
 sysroot="$(rustc --print sysroot | sed 's|\\|/|g')"
 host_lib_dir="${sysroot}/lib/rustlib/$(rustc -vV | grep host | awk '{print $2}')/lib"
-target_dll="$(dll-pack-builder find "${BUILD_OUT_DIR}")"
 
 extra_dll_pack_args=(
     --include "${host_lib_dir}/*"
@@ -27,6 +26,8 @@ fi
 rustup target add "${DLL_PACK_TARGET}"
 
 cargo build --profile super-release --target "${DLL_PACK_TARGET}"
+
+target_dll="$(dll-pack-builder find "${BUILD_OUT_DIR}")"
 
 mkdir -p ./artifacts/
 
