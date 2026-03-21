@@ -40,7 +40,7 @@ jobs:
         run: curl -o /usr/bin/jq -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && chmod +x /usr/bin/jq
       - uses: Swatinem/rust-cache@v2.7.3
       - name: Install dll-pack-builder
-        run: uv tool install git+https://github.com/nahco314/dll-pack-builder
+        run: uv tool install git+https://github.com/foro-fmt/dll-pack-builder@1e90b63
       - name: Build artifacts
         env:
           DLL_PACK_TARGET: ${{ matrix.target }}
@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install dll-pack-builder
-        run: python3 -m pip install git+https://github.com/nahco314/dll-pack-builder
+        run: python3 -m pip install git+https://github.com/foro-fmt/dll-pack-builder@1e90b63
       - name: Fetch local artifacts
         uses: actions/download-artifact@v4
         with:
