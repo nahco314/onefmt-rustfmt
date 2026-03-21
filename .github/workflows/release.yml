@@ -17,7 +17,10 @@ jobs:
           - runner: 'ubuntu-24.04'
             container: 'buildpack-deps:focal'
             target: 'x86_64-unknown-linux-gnu'
-          - runner: 'macos-15-intel'
+          - runner: 'ubuntu-24.04'
+            container: 'buildpack-deps:focal'
+            target: 'wasm32-wasip1'
+          - runner: 'macos-13'
             target: 'x86_64-apple-darwin'
           - runner: 'macos-14'
             target: 'aarch64-apple-darwin'
@@ -33,12 +36,13 @@ jobs:
       #          git config --global core.longpaths true
       - uses: actions/checkout@master
       - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: astral-sh/setup-uv@v6
       - name: Install jq
         if: matrix.container == 'buildpack-deps:focal'
         run: curl -o /usr/bin/jq -L https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 && chmod +x /usr/bin/jq
       - uses: Swatinem/rust-cache@v2.7.3
       - name: Install dll-pack-builder
-        run: pip install git+https://github.com/nahco314/dll-pack-builder
+        run: uv tool install git+https://github.com/nahco314/dll-pack-builder
       - name: Build artifacts
         env:
           DLL_PACK_TARGET: ${{ matrix.target }}
